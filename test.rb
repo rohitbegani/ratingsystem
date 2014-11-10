@@ -19,7 +19,7 @@ negativerange2 = ['rude', 'worse', 'undercooked'];
 negativerange3 = ['filthy'];
 negativerange4 = ['worst', 'terrible', 'horrible', 'disgusting'];
 
-q = string.downcase.gsub(/\,/,"")
+q = string.downcase.gsub(/[^A-Za-z0-9\s]/,"")
 words = q.split(" ") 
 #q = words.downcase
 

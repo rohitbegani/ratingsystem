@@ -9,7 +9,7 @@ class Rating
   property :id            , Serial
   property :business_id   , String
   property :useful        , Integer
-  property :scaled_rating , Integer 
+  property :initial_rating , Integer 
   
 end
 

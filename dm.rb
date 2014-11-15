@@ -10,6 +10,7 @@ class Rating
   property :business_id   , String
   property :useful        , Integer
   property :initial_rating , Float 
+  property :usefulval	   , Float 
   
 end
 

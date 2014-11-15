@@ -19,10 +19,18 @@ class Initial_Rating
 	req_hash2 = File.read("test123.json").split("\n").map do |line|
 	  			   JSON.parse(line)
 			      end	
+
+  	# req_hash3 = File.read("test123.json") do |useful|
+  	# 				JSON.parse([votes][useful])
+  	# 			end
 	id = 1		      
 	
+	# req_hash3 do |u|
+	# 	usefulv = useful
+	# end
 	req_hash2.each do |r|
 	  string = r['text']
+	  useful = r['votes']['useful']
 	  q = string.downcase.gsub(/[^A-Za-z0-9\s]/,"")
 	  words = q.split(" ") 
 	  val = 0
@@ -60,44 +68,23 @@ class Initial_Rating
 		end
 
 		if val == 0
-		  finalval = 0
-		  puts finalval
+		  initialval = 0
+		  puts initialval
 		else  
-	      finalval = val/count.to_f
-	      puts finalval
+	      initialval = val/count.to_f
+	      puts initialval
 	    end
-	      
+	    #useful1.to_i = :useful
 	    record = Rating.all( :id => id)
-	    record.update(:initial_rating => finalval)
+	    record.update(:initial_rating => initialval) 
+	    if useful == 0 then useful = 1 end
+	    usefulval = initialval * useful 
+	    record.update(:usefulval => usefulval)
+	    puts "useful #{usefulval}"
 	    id += 1
+
     end
   end	
 end
 
  Initial_Rating.new.initial_rating
-
-        
-		   
-  
-
-
-
-
-
-#q = words.downcase
-
-# q.each do |w|
-#      w.downcase
-# end
-
-
-
-#puts words
-
-# words2.each do |t|
-#   words.each do |u|
-#   	if t == u
-#   		puts "#{t}"
-#   	end	
-#   end		
-# end

@@ -84,7 +84,34 @@ class Initial_Rating
 	    id += 1
 
     end
+  end
+
+  def final_val
+  		id = 1
+  		v = 0
+  		a = 0
+  		final_rating = 0
+  		record = Rating.all( :id => id)
+  		#puts record
+  		 recordn = Rating.get(id).business_id
+  		 recordall = Rating.all(:business_id => recordn)
+  		 recordall.each do |e|
+	  		 #useful_summation += usefulval
+	  		 v += e.useful
+	  		 a += e.usefulval 
+	  		 final_rating = a/v
+	  		 #puts v
+	  		end
+	  		#puts final_rating
+
+	  		 # if recordn == recordall
+	  		 # 	puts true
+	  		 # else
+	  		 # 	puts false
+	  		 # end
+	  		# puts recordall
   end	
 end
 
  Initial_Rating.new.initial_rating
+ Initial_Rating.new.final_val

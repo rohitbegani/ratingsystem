@@ -4,7 +4,8 @@ require_relative 'dm.rb'
 
 DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 
-class Initial_Rating
+module RatingSystem
+ class Initial_Rating
   def initial_rating 
 	positiverange4 = ['legendary', 'legend', 'finest', 'insane', 'best'];
 	positiverange3 = ['favorite', 'favourite', 'fav', 'delicious', 'awesome', 'perfect', 'perfection', 'perfectly', 'scrumptous'];
@@ -100,6 +101,7 @@ class Initial_Rating
 	  		 v += e.useful
 	  		 a += e.usefulval 
 	  		 final_rating = a/v
+	  		 # record.update(:finalal => final_rating)
 	  		 #puts v
 	  		end
 	  		#puts final_rating
@@ -111,6 +113,8 @@ class Initial_Rating
 	  		 # end
 	  		# puts recordall
   end	
+end
+
 end
 
  Initial_Rating.new.initial_rating

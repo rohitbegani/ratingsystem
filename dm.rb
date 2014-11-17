@@ -11,6 +11,8 @@ class Rating
   property :useful        , Integer
   property :initial_rating , Float 
   property :usefulval	   , Float 
+  # property :finalval       , Float
+  property :business_name  , String
   
 end
 

@@ -1,0 +1,19 @@
+.body{
+	background-image: url('../public/img/background.jpg');
+}
+.main{
+	/*background-image: url('../img/background.jpg');
+	background-position: no-repeat center center;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;*/
+  	background-color: #351C75;
+}
+.title{
+	text-align: center;
+	vertical-align: center;
+	font-size: 250%;
+	color: #ff9900;
+	font-family: 'Ubuntu', sans-serif;
+}

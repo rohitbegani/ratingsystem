@@ -4,9 +4,9 @@ require 'haml'
 
 
 get '/' do
- "hi wassup?"
+	haml :index
 end
 
 get '/crawl' do
-  "crawl the shit out of this app."
+  	haml :crawl
 end

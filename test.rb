@@ -6,6 +6,7 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 
 # module RatingSystem
  class Initial_Rating
+  
   def initial_rating 
 	positiverange4 = ['legendary', 'legend', 'finest', 'insane', 'best'];
 	positiverange3 = ['favorite', 'favourite', 'fav', 'delicious', 'awesome', 'perfect', 'perfection', 'perfectly', 'scrumptous'];
@@ -19,14 +20,15 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 
 	req_hash2 = File.read("test123.json").split("\n").map do |line|
 	  			   JSON.parse(line)
-			      end	
+			      end	                                # Reading the Json File and creating 
+			      										# an array of hash of each record.
 
   	id = 1		   
 
 	req_hash2.each do |r|
-	  string = r['text']
-	  useful = r['votes']['useful']
-	  q = string.downcase.gsub(/[^A-Za-z0-9\s]/,"")
+	  string = r['text']								# Getting required attributes from 
+	  useful = r['votes']['useful']                     # the hash and splitting the words 
+	  q = string.downcase.gsub(/[^A-Za-z0-9\s]/,"")     # to create an array of words. 
 	  words = q.split(" ") 
 	  val = 0
 	  count = 0
@@ -42,9 +44,9 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 			val += 2
 			count += 1
 		  elsif positiverange1.include? w
-			val += 1
-			count += 1
-		  elsif neutralrange.include? w
+			val += 1                                     # Assigning the value to 'val' and 'count'
+			count += 1                                   # based on the range in which a 
+		  elsif neutralrange.include? w                  #particular word lies.
 			val += 0
 			count += 1
 		  elsif negativerange1.include? w
@@ -64,91 +66,84 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 
 		if val == 0
 		  initialval = 0
-		  puts initialval
 		else  
 	      initialval = val/count.to_f
-	      puts initialval
 	    end
-	    #useful1.to_i = :useful
+
+	    
 	    record = Rating.all( :id => id)
-	    record.update(:initial_rating => initialval) 
-	    if useful == 0 then useful = 1 end
-	    usefulval = initialval * useful 
+	    record.update(:initial_rating => initialval)    # Updating the DB with the useful
+	    if useful == 0 then useful = 1 end              # value calculated by multiplying
+	    usefulval = initialval * useful                 # initialval with useful
 	    record.update(:usefulval => usefulval)
 	    puts "useful #{usefulval}"
-	    
-    end
-  end
-
-  def final_val
-  		id = 1
-  		v = 0
-  		a = 0
-
-  		
-
-  		final_rating = 0
-  		last_id = Rating.last.id
-
-      for i in 1..2
-
-        recordn = Rating.get(id).business_id
-  		recordall = Rating.all(:business_id => recordn)
-  		   
-
-  		  recordall.each do |e|
-	  		v += e.useful
-	  		a += e.usefulval 
-	  		final_rating = a/v
-          
-      end
-
-      	x = final_rating
-
-	    ###Adding formula to scale and extract exact rating #Check veracity of formula
-	    ### Why is this <> not working?
-	    if x > -4 and x < -3.5
-	    	rating_integer = 1
-	    elsif x > -3.5 and x < -2.5
-	    	rating_integer = 1.5
-	    elsif x > -2.5 and x < -1.5
-	    	rating_integer = 2
-	    elsif x > -1.5 and x < 0.5
-	    	rating_integer = 2.5
-	    elsif x > 0.5 and x < 1.5
-	    	rating_integer = 3
-	    elsif x > 1.5 and x < 2.5
-	    	rating_integer = 3.5
-	    elsif x > 2.5 and x < 3.5
-	    	rating_integer = 4
-	    elsif x > 3.5 and x < 4.5
-	    	rating_integer = 4.5
-	    else
-	    	rating_integer = 5
-	    end
-	    		
-	    ###Formula Complete	
-	    		
 	    id += 1
-	    z = usefulval % 1
-	    if z != 0
-	    	decimal_val = z * 10
-	    	decimal_scaled = (decimal_val % 10)/10
-	    	integer_scaled = z - decimal_val
-	    	rating_decimal = (z/2)
-	    	rating = rating_integer + rating_decimal
-	    end
 
-	  		new_rating = Business.new
-	  		new_rating.business_id = recordn
-	  		new_rating.final_rating = final_rating
-	  		new_rating.save
+    end
+  end                                                  # End of initial_rating method
+
+
+
+  
+  def final_val
+  	id = 1
+  	v = 0
+  	a = 0
+    final_rating = 0
+  	last_id = Rating.last.id
+
+    for i in 1..2                                         # i loops n(number of restaurants) times
+      recordn = Rating.get(id).business_id				  # n is 2 here
+  	  recordall = Rating.all(:business_id => recordn)
+  		 
+  		 recordall.each do |e|
+	  	   v += e.useful
+	  	   a += e.usefulval 
+	  	   final_rating = a/v
+         end
+
+         x = final_rating
+
+         if x > -4 and x < -3.5
+	    	rating_integer = 1
+	     elsif x > -3.5 and x < -2.5
+	    	rating_integer = 1.5
+	     elsif x > -2.5 and x < -1.5
+	    	rating_integer = 2
+	     elsif x > -1.5 and x < 0.5
+	    	rating_integer = 2.5
+	     elsif x > 0.5 and x < 1.5
+	    	rating_integer = 3
+	     elsif x > 1.5 and x < 2.5
+	    	rating_integer = 3.5
+	     elsif x > 2.5 and x < 3.5
+	    	rating_integer = 4
+	     elsif x > 3.5 and x < 4.5
+	    	rating_integer = 4.5
+	     else
+	    	rating_integer = 5
+	     end
+
+	     z = final_rating % 1
+	      
+	     if z != 0
+	       decimal_val = z * 10
+	       decimal_scaled = (decimal_val % 10)/10
+	       integer_scaled =  final_rating - decimal_val
+	       rating_decimal = (decimal_scaled/2)
+	       rating = rating_integer + rating_decimal
+	     end
+
+	  	 new_rating = Business.new
+	  	 new_rating.business_id  = recordn
+	  	 new_rating.final_rating = rating
+	  	 new_rating.save
 	  	 
-	  	  last_business_id = recordn
-	  	  last_id_of_group = recordall.last.id
-	  	  id = last_id_of_group + 1 	  
-	 	  puts "id -> #{id}"
-	  end	  
+	  	 last_business_id = recordn
+	  	 last_id_of_group = recordall.last.id
+	  	 id = last_id_of_group + 1 	  
+	 	 puts "id -> #{id}"
+	end	  
 	  		
   end	
 end

@@ -6,12 +6,11 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 class Rating
   include DataMapper::Resource
   
-  property :id            , Serial
-  property :business_id   , String
-  property :useful        , Integer
+  property :id             , Serial
+  property :business_id    , String
+  property :useful         , Integer
   property :initial_rating , Float 
   property :usefulval	   , Float 
-  # property :finalval       , Float
   property :business_name  , String
   
 end
@@ -19,9 +18,10 @@ end
 class Business
   include DataMapper::Resource
 
-  property :id           , Serial
-  property :business_id  , String
-  property :final_rating , Float
+  property :id             , Serial
+  property :business_id    , String
+  property :final_rating   , Float
+  property :business_name  , String 
 end  
 
 DataMapper.auto_upgrade!

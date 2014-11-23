@@ -76,8 +76,41 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 	    usefulval = initialval * useful 
 	    record.update(:usefulval => usefulval)
 	    puts "useful #{usefulval}"
-	    id += 1
+	    x = usefulval
 
+	    ###Adding formula to scale and extract exact rating #Check veracity of formula
+	    ### Why is this <> not working?
+	    if -4 < x < -3.5
+	    	rating_integer = 1
+	    elsif -3.5 < x < -2.5
+	    	rating_integer = 1.5
+	    elsif -2.5 < x < -1.5
+	    	rating_integer = 2
+	    elsif -1.5 < x < 0.5
+	    	rating_integer = 2.5
+	    elsif 0.5 < x < 1.5
+	    	rating_integer = 3
+	    elsif 1.5 < x < 2.5
+	    	rating_integer = 3.5
+	    elsif 2.5 < x < 3.5
+	    	rating_integer = 4
+	    elsif 3.5 < x < 4.5
+	    	rating_integer = 4.5
+	    else
+	    	rating_integer = 5
+	    end
+	    		
+	    ###Formula Complete	
+	    		
+	    id += 1
+	    z = usefulval % 1
+	    if z != 0
+	    	decimal_val = z * 10
+	    	decimal_scaled = (decimal_val % 10)/10
+	    	integer_scaled = z - decimal_val
+	    	rating_decimal = (z/2)
+	    	rating = rating_integer + rating_decimal
+	    end
     end
   end
 

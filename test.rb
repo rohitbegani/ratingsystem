@@ -76,7 +76,34 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 	    usefulval = initialval * useful 
 	    record.update(:usefulval => usefulval)
 	    puts "useful #{usefulval}"
-	    x = usefulval
+	    
+    end
+  end
+
+  def final_val
+  		id = 1
+  		v = 0
+  		a = 0
+
+  		
+
+  		final_rating = 0
+  		last_id = Rating.last.id
+
+      for i in 1..2
+
+        recordn = Rating.get(id).business_id
+  		recordall = Rating.all(:business_id => recordn)
+  		   
+
+  		  recordall.each do |e|
+	  		v += e.useful
+	  		a += e.usefulval 
+	  		final_rating = a/v
+          
+      end
+
+      	x = final_rating
 
 	    ###Adding formula to scale and extract exact rating #Check veracity of formula
 	    ### Why is this <> not working?
@@ -111,30 +138,6 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 	    	rating_decimal = (z/2)
 	    	rating = rating_integer + rating_decimal
 	    end
-    end
-  end
-
-  def final_val
-  		id = 1
-  		v = 0
-  		a = 0
-
-  		
-
-  		final_rating = 0
-  		last_id = Rating.last.id
-
-      for i in 1..2
-
-        recordn = Rating.get(id).business_id
-  		recordall = Rating.all(:business_id => recordn)
-  		   
-
-  		  recordall.each do |e|
-	  		v += e.useful
-	  		a += e.usefulval 
-	  		final_rating = a/v
-          end
 
 	  		new_rating = Business.new
 	  		new_rating.business_id = recordn

@@ -4,7 +4,7 @@ require_relative 'dm.rb'
 
 DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
 
-module RatingSystem
+# module RatingSystem
  class Initial_Rating
   def initial_rating 
 	positiverange4 = ['legendary', 'legend', 'finest', 'insane', 'best'];
@@ -21,14 +21,8 @@ module RatingSystem
 	  			   JSON.parse(line)
 			      end	
 
-  	# req_hash3 = File.read("test123.json") do |useful|
-  	# 				JSON.parse([votes][useful])
-  	# 			end
-	id = 1		      
-	
-	# req_hash3 do |u|
-	# 	usefulv = useful
-	# end
+  	id = 1		   
+
 	req_hash2.each do |r|
 	  string = r['text']
 	  useful = r['votes']['useful']
@@ -91,31 +85,39 @@ module RatingSystem
   		id = 1
   		v = 0
   		a = 0
-  		final_rating = 0
-  		record = Rating.all( :id => id)
-  		#puts record
-  		 recordn = Rating.get(id).business_id
-  		 recordall = Rating.all(:business_id => recordn)
-  		 recordall.each do |e|
-	  		 #useful_summation += usefulval
-	  		 v += e.useful
-	  		 a += e.usefulval 
-	  		 final_rating = a/v
-	  		 # record.update(:finalal => final_rating)
-	  		 #puts v
-	  		end
-	  		#puts final_rating
 
-	  		 # if recordn == recordall
-	  		 # 	puts true
-	  		 # else
-	  		 # 	puts false
-	  		 # end
-	  		# puts recordall
+  		
+
+  		final_rating = 0
+  		last_id = Rating.last.id
+
+      for i in 1..2
+
+        recordn = Rating.get(id).business_id
+  		recordall = Rating.all(:business_id => recordn)
+  		   
+
+  		  recordall.each do |e|
+	  		v += e.useful
+	  		a += e.usefulval 
+	  		final_rating = a/v
+          end
+
+	  		new_rating = Business.new
+	  		new_rating.business_id = recordn
+	  		new_rating.final_rating = final_rating
+	  		new_rating.save
+	  	 
+	  	  last_business_id = recordn
+	  	  last_id_of_group = recordall.last.id
+	  	  id = last_id_of_group + 1 	  
+	 	  puts "id -> #{id}"
+	  end	  
+	  		
   end	
 end
 
-end
+# end
 
  Initial_Rating.new.initial_rating
  Initial_Rating.new.final_val

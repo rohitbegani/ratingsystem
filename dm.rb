@@ -16,4 +16,12 @@ class Rating
   
 end
 
+class Business
+  include DataMapper::Resource
+
+  property :id           , Serial
+  property :business_id  , String
+  property :final_rating , Float
+end  
+
 DataMapper.auto_upgrade!

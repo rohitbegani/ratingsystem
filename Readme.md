@@ -8,3 +8,5 @@
 3)  Run the command 'ruby reading_json.rb'
 
 4)  Run the command 'ruby test.rb'
+
+5) Sinatra connected for viewing on the web

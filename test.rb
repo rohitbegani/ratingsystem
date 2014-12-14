@@ -92,8 +92,8 @@ DataMapper.setup :default, "sqlite://#{Dir.pwd}/ratingsystem.db"
     final_rating = 0
   	last_id = Rating.last.id
 
-    for i in 1..2                                         # i loops n(number of restaurants) times
-      recordn = Rating.get(id).business_id				  # n is 2 here
+    for i in 1..10                                         # i loops n(number of restaurants) times
+      recordn = Rating.get(id).business_id				        # n is 10 here
   	  recordall = Rating.all(:business_id => recordn)
   		 
   		 recordall.each do |e|
